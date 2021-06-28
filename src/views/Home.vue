@@ -1,11 +1,10 @@
 <template>
-  <div>
+  <div class="">
     <Navbar/>
-    <div class="d-flex">
+    <div class="" >
       <InputFile/>
     </div>
-
-    
+       
   </div>
 </template>
 
