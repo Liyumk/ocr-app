@@ -21,11 +21,19 @@
                     v-model="inputImage"
                     @change="selectImage">
                     </v-file-input>
+                    <div class="text-center" v-show="isLoading">
+                        <v-progress-circular
+                        indeterminate
+                        color="primary"
+                        ></v-progress-circular>
+                    </div>
+                    <p class="mt-5">{{readImage}}</p>
                 </v-col>
                 <v-col>
                     <img :src="url" alt="Image selected" id="image-preview" v-show="isSelected">
                 </v-col>
             </v-row>
+            
             </v-card-text>
           
             <v-card-actions>   
@@ -50,7 +58,9 @@ export default {
             inputImage: null,
             url: "",
             isSelected: false,
-            enableButton: true
+            enableButton: true,
+            readImage: "",
+            isLoading: false
         }
     },
     methods: {
@@ -65,30 +75,34 @@ export default {
             else{
                 this.isSelected = false;
                 this.enableButton = true;
-                this.url = ""
+                this.url = "";
+                this.readImage = "";
             }
         },
 
         uploadImage(){
             const fd = new FormData();
             if (this.inputImage) {
-                console.log(this.url);
-                fd.append('image', this.inputImage,this.inputImage.name);
+                this.isLoading = true; 
+                fd.append('image', this.inputImage);
                 const options = {
-                method: 'GET',
-                url: 'https://ocrly-image-to-text.p.rapidapi.com/',
+                method: 'POST',
+                url: "https://api.ocr.space/parse/image",
+                data: fd,
                 params: {
-                    filename: this.inputImage.name,
-                    imageurl: this.url
+                    file: this.inputImage 
                 },
                 headers: {
-                    'x-rapidapi-key': 'fc21b304c3mshf7443d1144441e0p1f9b66jsn051e4743d50a',
-                    'x-rapidapi-host': 'ocrly-image-to-text.p.rapidapi.com'
+                    'apikey': '1aaea2866288957'
                 }
                 };
+                console.log("Uploading image");
+                axios.request(options).then(response => {
+                    const data = response.data;
+                    this.readImage = data.ParsedResults[0].ParsedText;
+                    console.log(this.readImage);
+                    this.isLoading = false;
 
-                axios.request(options).then(function (response) {
-                    console.log(response.data);
                 }).catch(function (error) {
                     console.error(error);
                 });
