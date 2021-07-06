@@ -106,11 +106,11 @@ export default {
                 this.url = "";
                 this.readImage = "";
                 this.searchablePdfURL = "";
+                this.isLoading = false;
             }
         },
 
         uploadImage(){
-            console.log(this.language.value);
             const fd = new FormData();
             if (this.inputImage) {
                 this.isLoading = true; 
@@ -136,7 +136,6 @@ export default {
                     const data = response.data;
                     this.readImage = data.ParsedResults[0].ParsedText;
                     this.searchablePdfURL = data.SearchablePDFURL;
-                    console.log(response.request.response);
                     this.isLoading = false;
                 }).catch(function (error) {
                     console.error(error);
