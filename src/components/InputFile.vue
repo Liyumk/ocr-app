@@ -2,14 +2,14 @@
     <div class="mt-16">
         <v-card
         class="mx-auto pa-2 pb-6 mb-10"
-        max-width="900"
+        max-width="1200"
         dense>
             <v-card-text>
                 <p class="text-h5">
                     OCR - Optical Character Recognition
                 </p>
                 <p>This is a simple Optical Character Recognition App that recognizes text within a digital image.
-                    Input the image in the image input section and select the language in which the text in the image is written.
+                    Input the image in the image input section and select the language in which the text in the image is written and it will give you the text.
                 </p>
               
             
@@ -34,8 +34,7 @@
                             item-value="abbr"
                             :items="items"
                             return-object
-                           
-                            >     
+                            >    
                             </v-select>
                         </v-col>
                     </v-row>
@@ -45,8 +44,31 @@
                         color="primary"
                         ></v-progress-circular>
                     </div>
-                    <p class="mt-5">{{readImage}}</p>
-                    <a v-show="searchablePdfURL" :href="searchablePdfURL">Searchable PDF URL</a>
+                    <v-card v-show="readImage">
+                        <v-card-text >
+                            <p class="mt-5">{{readImage}}</p>
+                            <v-row class="mt-3">
+                                <v-col class="pb-0">
+                                    <v-btn 
+                                    @click="doCopy"
+                                    small
+                                    color="primary"
+                                    class="mb-2"
+                                    tile
+                                    depressed>
+                                        Copy to clipboard
+                                    </v-btn>
+                                </v-col>
+                                <v-col class="text-right pb-0">
+                                    <a v-show="searchablePdfURL" :href="searchablePdfURL">Searchable PDF URL</a>
+                                </v-col>
+                            </v-row>
+                            
+                          
+                        </v-card-text>
+                    </v-card>
+                    
+                    
 
                 </v-col>
                 <v-col>
@@ -65,12 +87,31 @@
             </v-card-actions>
         </v-card>
 
+        <v-snackbar
+        v-model="snackbar"
+        >
+        Text copied!
+
+        <template v-slot:action="{attrs}">
+            <v-btn
+            color="red"
+            text
+            v-bind="attrs"
+            @click="snackbar = false"
+            >
+          Close
+        </v-btn>
+        </template>
+
+        </v-snackbar>
+
     </div>
 </template>
 
 <script>
 
 import axios from "axios";
+
 
 export default {
     data : function() {
@@ -82,6 +123,7 @@ export default {
             readImage: "",
             isLoading: false,
             searchablePdfURL: "",
+            snackbar: false,
             language: {language: "English", value: "eng"},
             items: [
                 {language: "Arabic", value: "ara"},
@@ -108,8 +150,7 @@ export default {
                 this.searchablePdfURL = "";
                 this.isLoading = false;
             }
-        },
-
+        },  
         uploadImage(){
             const fd = new FormData();
             if (this.inputImage) {
@@ -142,7 +183,13 @@ export default {
                 });
                 
             }
-        }
+        },
+        doCopy() {
+            var setThis = this;
+            this.$copyText(this.readImage).then(function () {
+            setThis.snackbar = true;
+        })},
+        
     }
 }
 </script>
