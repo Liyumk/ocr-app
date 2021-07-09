@@ -1,8 +1,16 @@
 <template>
   <v-app>
-    <v-main>
+    <v-main class="mb-10">
       <router-view/>
     </v-main>
+     <v-footer color="grey lighten-2" padless>
+            <v-col
+            class="text-center"
+            cols="12"
+            >
+           <a href="https://www.linkedin.com/in/liyumk/" target="_blank">Liyu Mesfin</a>  - {{ new Date().getFullYear() }} 
+            </v-col>
+        </v-footer>
   </v-app>
 </template>
 
