@@ -1,17 +1,20 @@
 <template>
     <div class="mt-16">
         <v-card
-        class="mx-auto pa-2 pb-6 mb-10"
-        max-width="1200"
+        color=" "
+        class="mx-auto  mb-10"
+        max-width="1050"
         dense>
+            <v-card-title
+            primary-title
+            class="text-h5 primary grey--text text--lighten-4 pa-5">
+              OCR - Optical Character Recognition
+            </v-card-title>
             <v-card-text>
-                <p class="text-h5">
-                    OCR - Optical Character Recognition
-                </p>
-                <p>This is a simple Optical Character Recognition App that recognizes text within a digital image.
+
+                <p class="mt-5">This is a simple Optical Character Recognition App that recognizes text within a digital image.
                     Input the image in the image input section and select the language in which the text in the image is written and it will give you the text.
                 </p>
-              
             
             <v-row class="mt-6">
                 <v-col class="col-md-6 col-12">
@@ -19,13 +22,15 @@
                     label="image input"
                     accept="image/*"
                     outlined
-                    color="black"
                     show-size
                     v-model="inputImage"
-                    @change="selectImage">
+                    @change="selectImage"
+                    prepend-icon="mdi-paperclip primary--text"
+                    >
+                  
                     </v-file-input>
                     
-                    <v-row class="ml-5">
+                    <v-row class="">
                         <v-col cols="8">
                             <v-select
                             label="Select a language"
@@ -35,18 +40,30 @@
                             :items="items"
                             return-object
                             >    
+                            <v-icon
+                            slot="prepend"
+                            color="primary">
+                            mdi-translate
+                            </v-icon>
                             </v-select>
                         </v-col>
                     </v-row>
-                    <div class="text-center" v-show="isLoading">
+                    <div class="text-center mt-5" v-show="isLoading">
                         <v-progress-circular
                         indeterminate
                         color="primary"
                         ></v-progress-circular>
                     </div>
-                    <v-card v-show="readImage">
-                        <v-card-text >
-                            <p class="mt-5">{{readImage}}</p>
+                    <v-card 
+                    class="mt-3"
+                    v-show="readImage"
+                    elevation="4"
+                    >   
+                        <v-card-title>
+                            Result
+                        </v-card-title>
+                        <v-card-text>
+                            <p class="mt-1">{{readImage}}</p>
                             <v-row class="mt-3">
                                 <v-col class="pb-0">
                                     <v-btn 
@@ -55,7 +72,8 @@
                                     color="primary"
                                     class="mb-2"
                                     tile
-                                    depressed>
+                                    depressed
+                                    >
                                         Copy to clipboard
                                     </v-btn>
                                 </v-col>
@@ -63,12 +81,8 @@
                                     <a v-show="searchablePdfURL" :href="searchablePdfURL">Searchable PDF URL</a>
                                 </v-col>
                             </v-row>
-                            
-                          
                         </v-card-text>
                     </v-card>
-                    
-                    
 
                 </v-col>
                 <v-col>
