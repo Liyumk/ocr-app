@@ -5,10 +5,11 @@
     </v-main>
      <v-footer color="grey lighten-2" padless>
             <v-col
-            class="text-center"
+            class="text-center pb-2"
             cols="12"
             >
-           <a href="https://www.linkedin.com/in/liyumk/" target="_blank">Liyu Mesfin</a>  - {{ new Date().getFullYear() }} 
+              <a href="https://www.linkedin.com/in/liyumk/" target="_blank"  class="text-decoration-none">Liyu Mesfin</a> - {{ new Date().getFullYear() }} 
+              | <span>used API <a href="https://ocr.space/ocrapi" class="text-decoration-none" target="_blank">OCR.space</a></span>
             </v-col>
         </v-footer>
   </v-app>
